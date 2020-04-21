@@ -7,9 +7,8 @@ import {fetchShow as mockFetchShow} from "./api/fetchShow";
 
 jest.mock("./api/fetchShow");
 
-const episodesData = {
-    data: [
-    {
+const apiData = {
+    data: {
         id: 2993,
         url: 'http://www.tvmaze.com/shows/2993/stranger-things',
         name: 'Stranger Things',
@@ -606,20 +605,20 @@ const episodesData = {
             }
           ]
         }
-      }
-    ]
-};
+}};
 
-// test("App renders without errors", async() => {
-//     mockFetchShow.mockResolvedValueOnce(episodesData)
-//     render(<App episodes={[]} />);
-// });
+test("App renders without errors", () => {
+    mockFetchShow.mockResolvedValueOnce(apiData)
+    render(<App episodes={[]} />);
+});
 
 test("App renders correct data when dropdown item is selected", async() => {
-    mockFetchShow.mockResolvedValueOnce(episodesData);
+    mockFetchShow.mockResolvedValue(apiData);
     const {getByText} = render(<App />);
     await waitFor(() => {
     const dropdown = getByText(/select a season/i);
     userEvent.click(dropdown);
+    const season1Dropdown = getByText(/season 1/i)
+    userEvent.click(season1Dropdown)
     })
 });
